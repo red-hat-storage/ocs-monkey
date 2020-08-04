@@ -36,7 +36,7 @@ A number of options are available:
 $ ./workload_runner.py --help
 usage: workload_runner.py [-h] [-l LOG_DIR] [-m {ReadWriteOnce,ReadWriteMany}]
                  [-n NAMESPACE] [--oc OC] [--ocs-namespace OCS_NAMESPACE]
-                 [-s STORAGECLASS] [-z]
+                 [-s STORAGECLASS] [-t RUNTIME] [-z]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -52,6 +52,7 @@ optional arguments:
   -s STORAGECLASS, --storageclass STORAGECLASS
                         StorageClassName for the workload's PVCs
   -z, --sleep-on-error  On error, sleep forever instead of exit
+  -t, --runtime       Run time in seconds
 ```
 
 Deployment via the Helm chart (using Helm v3):
