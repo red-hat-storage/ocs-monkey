@@ -59,12 +59,21 @@ class Dispatcher:
             LOGGER.debug("enqueue: %s", event)
             self._event_queue.put(event)
 
-    def run(self) -> None:
-        """Process Events until the queue is empty."""
+    def run(self, runtime: int) -> None:
+        """
+        Process events until the queue is empty or until runtime.
+
+        Parameters:
+            runtime: Period after which the events has to be dis-continued.
+
+        """
+        start_time = time.time()
         try:
             while True:
-                event = self._event_queue.get_nowait()
                 now = time.time()
+                if now - start_time >= runtime:
+                    self._event_queue.queue.clear()
+                event = self._event_queue.get_nowait()
                 delta = event.when - now
                 if delta > 0:
                     time.sleep(delta)

@@ -94,6 +94,10 @@ def main() -> None:
                         default="quay.io/johnstrunk/osio-workload",
                         type=str,
                         help="Container image for OSIO worker pods")
+    parser.add_argument("-t", "--runtime",
+                        default=7200,
+                        type=int,
+                        help="Run time in seconds")
     global CLI_ARGS  # pylint: disable=global-statement
     CLI_ARGS = parser.parse_args()
 
@@ -129,7 +133,7 @@ def main() -> None:
                             kernel_rm=CLI_ARGS.osio_kernel_rm,
                             workload_image=CLI_ARGS.osio_image))
     try:
-        dispatch.run()
+        dispatch.run(runtime=CLI_ARGS.runtime)
     except osio.UnhealthyDeployment:
         if CLI_ARGS.sleep_on_error:
             set_health(False)
