@@ -10,7 +10,7 @@ on:  # yamllint disable-line rule:truthy
 
 env:
   HELM_VERSION: "3.0.2"
-  IMAGE: "quay.io/johnstrunk/ocs-monkey-generator"
+  IMAGE: "quay.io/ocsci/ocs-monkey-generator"
   KIND_VERSION: "0.6.1"
   KUBERNETES_VERSION: "1.16.3"
 

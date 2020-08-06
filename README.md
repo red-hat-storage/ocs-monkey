@@ -5,19 +5,16 @@ This repo is designed to provide a randomized load for "chaos testing".
 ## Status
 
 - Generator container: ![Workload generator container
-  status](https://github.com/JohnStrunk/ocs-monkey/workflows/Workload%20generator/badge.svg)
+  status](https://github.com/red-hat-storage/ocs-monkey/workflows/Workload%20generator/badge.svg)
   [![Docker Repository on
-  Quay](https://quay.io/repository/johnstrunk/ocs-monkey-generator/status
+  Quay](https://quay.io/repository/ocsci/ocs-monkey-generator/status
   "Docker Repository on
-  Quay")](https://quay.io/repository/johnstrunk/ocs-monkey-generator)
+  Quay")](https://quay.io/repository/ocsci/ocs-monkey-generator)
 - Workload container: ![OSIO workload container
-  status](https://github.com/JohnStrunk/ocs-monkey/workflows/OSIO%20workload/badge.svg)
+  status](https://github.com/red-hat-storage/ocs-monkey/workflows/OSIO%20workload/badge.svg)
   [![Docker Repository on
-  Quay](https://quay.io/repository/johnstrunk/osio-workload/status "Docker
-  Repository on Quay")](https://quay.io/repository/johnstrunk/osio-workload)
-
-Prioritization & project work are tracked in [Work
-items](https://github.com/JohnStrunk/ocs-monkey/projects/1)
+  Quay](https://quay.io/repository/ocsci/osio-workload/status "Docker
+  Repository on Quay")](https://quay.io/repository/ocsci/osio-workload)
 
 ## Usage
 
@@ -52,7 +49,7 @@ optional arguments:
   -s STORAGECLASS, --storageclass STORAGECLASS
                         StorageClassName for the workload's PVCs
   -z, --sleep-on-error  On error, sleep forever instead of exit
-  -t, --runtime       Run time in seconds
+  -t, --runtime         Run time in seconds
 ```
 
 Deployment via the Helm chart (using Helm v3):

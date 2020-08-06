@@ -1,12 +1,12 @@
 ---
 # Container image for the workload controller
-controllerImage: quay.io/johnstrunk/ocs-monkey-generator
+controllerImage: quay.io/ocsci/ocs-monkey-generator
 
 ocs:
   namespace: openshift-storage
 
 osio:
-  image: quay.io/johnstrunk/osio-workload:latest
+  image: quay.io/ocsci/osio-workload:latest
   workerInterarrival: 45
   workerLifetime: 86400
   workerActive: 1800
@@ -18,7 +18,7 @@ osio:
 workload:
   accessmode: ReadWriteOnce
   namespace: ocs-monkey
-  storageClass: openshift-storage-ceph-rbd
+  storageClass: ocs-storagecluster-ceph-rbd
 
 # StorageClass for the workload generator's logs (and must-gather)
 logPVCClass: gp2

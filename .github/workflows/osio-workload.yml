@@ -9,7 +9,7 @@ on:  # yamllint disable-line rule:truthy
     - cron: "7 4 * * 1"  # 4:07 every Monday
 
 env:
-  IMAGE: "quay.io/johnstrunk/osio-workload"
+  IMAGE: "quay.io/ocsci/osio-workload"
 
 jobs:
   build:

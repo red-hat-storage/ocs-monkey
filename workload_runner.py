@@ -91,7 +91,7 @@ def main() -> None:
                         type=float,
                         help="OSIO workload kernel rm rate (#/hr)")
     parser.add_argument("--osio-image",
-                        default="quay.io/johnstrunk/osio-workload",
+                        default="quay.io/ocsci/osio-workload",
                         type=str,
                         help="Container image for OSIO worker pods")
     parser.add_argument("-t", "--runtime",
