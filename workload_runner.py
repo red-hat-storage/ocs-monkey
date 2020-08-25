@@ -139,9 +139,10 @@ def main() -> None:
             set_health(False)
         logging.info("starting log collection")
         log_gather.gather(log_dir)
-        logging.info("Controller stopped due to detected error")
+        logging.error("Controller stopped due to detected error")
         while CLI_ARGS.sleep_on_error:
             time.sleep(9999)
+        raise
 
 if __name__ == '__main__':
     main()
