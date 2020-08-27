@@ -76,7 +76,7 @@ def main() -> None:
                         type=float,
                         help="Steady-state check interval (sec)")
     parser.add_argument("--cephcluster-name",
-                        default="openshift-storage-cephcluster",
+                        default="ocs-storagecluster-cephcluster",
                         type=str,
                         help="Name of the cephcluster object")
     parser.add_argument("-l", "--log-dir",
