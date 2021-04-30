@@ -64,3 +64,59 @@ spec:
         - name: logdir
           persistentVolumeClaim:
             claimName: '{{ template "ocs-monkey-generator.fullname" . }}'
+
+---
+{{- if eq .Values.chaos.enabled true }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ template "ocs-monkey-generator.fullname" . }}-chaos'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: '{{ include "ocs-monkey-generator.name" . }}-chaos'
+      app.kubernetes.io/instance: "{{ .Release.Name }}-chaos"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: '{{ include "ocs-monkey-generator.name" . }}-chaos'
+        app.kubernetes.io/instance: "{{ .Release.Name }}-chaos"
+    spec:
+      initContainers:
+        - name: init-workload-runner
+          image: busybox:latest
+          command: ["sleep", "240"]
+      containers:
+        - name: runner
+          image: "{{ .Values.controllerImage }}"
+          command: ["python3", "/chaos_runner.py"]
+          args:
+            - "--additional-failure"
+            - "{{ .Values.chaos.additionalFailure }}"
+            - "--check-interval"
+            - "{{ .Values.chaos.checkInterval }}"
+            - "--cephcluster-name"
+            - "{{ .Values.chaos.cephclusterName }}"
+            - "--log-dir"
+            - "/logs"
+            - "--mitigation-timeout"
+            - "{{ .Values.chaos.mitigationTimeout }}"
+            - "--mttf"
+            - "{{ .Values.chaos.mttf }}"
+            - "--ocs-namespace"
+            - "{{ .Values.ocs.namespace }}"
+            - "--monitor-deployment"
+            - {{ .Release.Namespace }}/
+            {{- template "ocs-monkey-generator.fullname" . }}
+          volumeMounts:
+            - name: logdir
+              mountPath: "/logs"
+      securityContext:
+        fsGroup: 99999
+      serviceAccount: '{{ template "ocs-monkey-generator.fullname" . }}'
+      volumes:
+        - name: logdir
+          persistentVolumeClaim:
+            claimName: '{{ template "ocs-monkey-generator.fullname" . }}-chaos'
+{{ end -}}

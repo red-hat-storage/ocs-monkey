@@ -10,3 +10,18 @@ spec:
   resources:
     requests:
       storage: 100Gi
+
+---
+{{- if eq .Values.chaos.enabled true }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: '{{ template "ocs-monkey-generator.fullname" . }}-chaos'
+spec:
+  storageClassName: {{ .Values.logPVCClass }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+{{ end -}}

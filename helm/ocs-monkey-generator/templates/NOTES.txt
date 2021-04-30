@@ -23,3 +23,18 @@ Workload details:
 
 Watch the generator's logs via:
   $ kubectl -n {{ .Release.Namespace }} logs -f deploy/{{ template "ocs-monkey-generator.fullname" . }}
+
+
+{{- if eq .Values.chaos.enabled true }}
+Chaos Runner details:
+  Ceph cluster name: {{ .Values.chaos.cephclusterName }}
+  Failure mitigation timeout(sec): {{ .Values.chaos.mitigationTimeout }}
+  Mean time to failure(sec): {{ .Values.chaos.mttf }}
+  Deployment to be monitored: {{ .Release.Namespace }}/
+            {{- template "ocs-monkey-generator.fullname" . }}
+  Probability of having an additional simultaneous failure [0,1): {{ .Values.chaos.additionalFailure }}
+  Steady-state check interval(sec): {{ .Values.chaos.checkInterval }}
+
+Watch the chaos runner's logs via:
+  $ kubectl -n {{ .Release.Namespace }} logs -f deploy/{{ template "ocs-monkey-generator.fullname" . }}-chaos
+{{ end -}}
