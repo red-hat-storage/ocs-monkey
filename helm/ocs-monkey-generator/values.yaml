@@ -15,6 +15,16 @@ osio:
   kernelUntar: 6
   kernelRm: 6
 
+# Parameters to configure chaos runner
+chaos:
+  # Set this parameter to install chaos runner
+  enabled: false
+  additionalFailure: 0.25
+  checkInterval: 30
+  cephclusterName: ocs-storagecluster-cephcluster
+  mitigationTimeout: 900
+  mttf: 150
+
 workload:
   accessmode: ReadWriteOnce
   namespace: ocs-monkey
