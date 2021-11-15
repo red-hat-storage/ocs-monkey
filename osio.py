@@ -45,7 +45,7 @@ class UnhealthyDeployment(Exception):
 
 
 def start(namespace: str,  # pylint: disable=too-many-arguments
-          storage_class: str,
+          storage_classes: list,
           access_mode: str,
           interarrival: float,
           lifetime: float,
@@ -54,13 +54,13 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
           kernel_slots: int,
           kernel_untar: float,
           kernel_rm: int,
-          workload_image: str) -> Event:
+          workload_image: str) -> list:
     """
     Start the workload.
 
     Parameters:
         namespace: The namespace where objects should be placed/managed
-        storage_class: The StorageClass name to use in PVCs
+        storage_classes: List of the The StorageClass names to use in PVCs
         access_mode: The access mode to request for the PVC. Available options:
             ReadWriteOnce, ReadWriteMany
         interarrival: The mean interarrival time (in seconds) for creating new
@@ -77,14 +77,14 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
         workload_image: Container image for osio worker pods
 
     Returns:
-        The initial Event that starts the workload. This Event should be queued
+        The list of initial Events that starts the workload. These Events should be queued
         into the Dispatcher.
 
     """
     LOGGER.info("starting run iat:%.1f life:%.1f active:%.1f idle:%.1f",
                 interarrival, lifetime, active, idle)
     LOGGER.info("namespace: %s", namespace)
-    LOGGER.info("storageclass: %s", storage_class)
+    LOGGER.info("storageclasses: %s", storage_classes)
     LOGGER.info("pvc access mode: %s", access_mode)
     LOGGER.info("Average # of deployments: %.1f", lifetime/interarrival)
     LOGGER.info("Fraction of deployments active: %.2f", active/(active+idle))
@@ -96,7 +96,7 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
     if WORKAROUND_MIN_RUNTIME:
         LOGGER.warning("Workaround enabled: min pod runtime")
 
-    return Creator(namespace=namespace,
+    return [Creator(namespace=namespace,
                    storage_class=storage_class,
                    access_mode=access_mode,
                    interarrival=interarrival,
@@ -106,7 +106,7 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
                    kernel_slots=kernel_slots,
                    kernel_untar=kernel_untar,
                    kernel_rm=kernel_rm,
-                   workload_image=workload_image)
+                   workload_image=workload_image) for storage_class in storage_classes]
 
 def resume(namespace: str) -> List[Event]:
     """

@@ -46,8 +46,8 @@ optional arguments:
   --oc OC               Path/executable for the oc command
   --ocs-namespace OCS_NAMESPACE
                         Namespace where the OCS components are running
-  -s STORAGECLASS, --storageclass STORAGECLASS
-                        StorageClassName for the workload's PVCs
+  -s, --storageclasses
+                        StorageClass names for the workload's PVCs
   -z, --sleep-on-error  On error, sleep forever instead of exit
   -t, --runtime         Run time in seconds
 ```
