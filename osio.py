@@ -45,7 +45,7 @@ class UnhealthyDeployment(Exception):
 
 
 def start(namespace: str,  # pylint: disable=too-many-arguments
-          storage_classes: list,
+          storage_classes: List[str],
           access_mode: str,
           interarrival: float,
           lifetime: float,
@@ -54,7 +54,7 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
           kernel_slots: int,
           kernel_untar: float,
           kernel_rm: int,
-          workload_image: str) -> list:
+          workload_image: str) -> List[Event]:
     """
     Start the workload.
 
@@ -99,7 +99,7 @@ def start(namespace: str,  # pylint: disable=too-many-arguments
     return [Creator(namespace=namespace,
                    storage_class=storage_class,
                    access_mode=access_mode,
-                   interarrival=interarrival,
+                   interarrival=interarrival*len(storage_classes),
                    lifetime=lifetime,
                    active=active,
                    idle=idle,

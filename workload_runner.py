@@ -133,8 +133,7 @@ def main() -> None:
                         kernel_rm=CLI_ARGS.osio_kernel_rm,
                         workload_image=CLI_ARGS.osio_image)
 
-    for event_item in events:
-        dispatch.add(event_item)
+    dispatch.add(*events)
 
     try:
         dispatch.run(runtime=CLI_ARGS.runtime)
