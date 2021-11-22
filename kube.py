@@ -49,7 +49,7 @@ def call(api: 'Callable[..., Any]', *args: Any, **kwargs: Any) -> MANIFEST:
         except ApiException as ex:
             action = codes.get(ex.status)
             if action == "ignore":
-                return dict()
+                return {}
             if action == "retry":
                 time.sleep(1)
                 continue
