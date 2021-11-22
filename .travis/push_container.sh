@@ -5,7 +5,7 @@ set -e -o pipefail
 
 image="$1"
 
-if [[ "x$2" == "xversion" ]]; then
+if [[ "$2" == "version" ]]; then
         [[ "$3" =~ ^v([0-9]+.*) ]] || exit 1;
         tag="${BASH_REMATCH[1]}"
 else
