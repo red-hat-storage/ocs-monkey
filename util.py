@@ -3,12 +3,13 @@
 import logging
 import os
 import time
+from typing import List
 
 def setup_logging(log_dir: str) -> None:
     """Initializes logging to file & stdout."""
     os.mkdir(log_dir)
 
-    handlers = [
+    handlers: List[logging.Handler] = [
         logging.FileHandler(os.path.join(log_dir, "runner.log")),
         logging.StreamHandler()
     ]

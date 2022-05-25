@@ -1,6 +1,7 @@
 __pycache__/
 /venv
 *.pyc
+.test
 /.mypy_cache/
 /.tox/
 /.vscode/
