@@ -51,7 +51,7 @@ jobs:
           kubectl get nodes
 
       - name: tox
-        run: tox -v -e py36,py36-kubetest,srclint
+        run: tox -v -e lint,test,kubetest,srclint
 
       - name: Lint helm chart
         run: |

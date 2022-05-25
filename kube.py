@@ -7,11 +7,12 @@ responses in order to make working with the API more straightforward.
 
 import os
 import time
-from typing import Any, Callable, Dict  # pylint: disable=unused-import
+from typing import Any, Callable, Dict, Optional
 
 import kubernetes
 import kubernetes.client as k8s
 from kubernetes.client.rest import ApiException
+from kubernetes.config import new_client_from_config
 
 
 MANIFEST = Dict[str, Any]
@@ -23,7 +24,7 @@ else:
     kubernetes.config.load_kube_config()
 
 
-def call(api: 'Callable[..., Any]', *args: Any, **kwargs: Any) -> MANIFEST:
+def call(api: Callable[..., Any], *args: Any, **kwargs: Any) -> MANIFEST:
     """
     Call the kubernetes client APIs and handle the exceptions.
 
@@ -58,6 +59,7 @@ def call(api: 'Callable[..., Any]', *args: Any, **kwargs: Any) -> MANIFEST:
         return result
     return dict(result.to_dict())
 
+
 def create_namespace(name: str, existing_ok: bool = False) -> MANIFEST:
     """
     Create a namespace.
@@ -86,15 +88,8 @@ def create_namespace(name: str, existing_ok: bool = False) -> MANIFEST:
                    field_selector=f'metadata.name={name}')
     return ns_list["items"][0]  # type: ignore
 
-def deployment_is_ready(namespace: str, name: str) -> bool:
-    """Determine if a Deployment's pods are passing readiness check."""
-    apps_v1 = k8s.AppsV1Api()
-    deployments = call(apps_v1.list_namespaced_deployment,
-                       namespace=namespace,
-                       field_selector=f'metadata.name={name}')
-    if not deployments["items"]:
-        return False
-    deployment = deployments["items"][0]
-    if deployment["spec"]["replicas"] == deployment["status"].get("ready_replicas"):
-        return True
-    return False
+
+def get_apps_v1_api_client(config_file: Optional[str] = None) -> k8s.AppsV1Api:
+    """Get AppsV1Api kube client. The main use case is to connect with external cluster."""
+    api_client = new_client_from_config(config_file=config_file) if config_file else None
+    return k8s.AppsV1Api(api_client=api_client)
