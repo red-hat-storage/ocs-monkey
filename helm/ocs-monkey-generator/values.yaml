@@ -24,7 +24,7 @@ chaos:
   cephclusterName: ocs-storagecluster-cephcluster
   mitigationTimeout: 900
   mttf: 150
-  runtime: 7200
+  runtime: 0
 
 workload:
   accessmode: ReadWriteOnce
