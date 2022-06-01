@@ -134,9 +134,9 @@ def get_cli_args() -> argparse.Namespace:
                         help="kubeconfig file path for accessing the cluster "
                         "where the health deployment is.")
     parser.add_argument("-t", "--runtime",
-                        default=7200,
+                        default=0,
                         type=int,
-                        help="Run time in seconds")
+                        help="Run time in seconds (0 = infinite).")
     return parser.parse_args()
 
 
@@ -150,6 +150,7 @@ def main() -> None:
     assert cli_args.mttf > 0, "mttf must be greater than 0"
     assert cli_args.mitigation_timeout > 0, "mitigation timeout must be greater than 0"
     assert cli_args.check_interval > 0, "steady-state check interval must be greater than 0"
+    assert cli_args.runtime >= 0, "runtime must be greater than or equal to 0"
     monitor_deployments = []
     if cli_args.monitor_deployment is not None:
         for deploy in cli_args.monitor_deployment:
@@ -200,7 +201,7 @@ def main() -> None:
     chaos_mgr = ChaosManager(monitor_deployments, cli_args.monitor_deployment_cluster_config)
 
     run_start = time.time()
-    while (time.time() - run_start) < cli_args.runtime:
+    while cli_args.runtime == 0 or (time.time() - run_start) < cli_args.runtime:
         fail_instance: Optional[failure.Failure] = None
         try:
             fail_instance = chaos_mgr.get_failure(failure_types)
