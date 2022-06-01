@@ -133,6 +133,10 @@ def get_cli_args() -> argparse.Namespace:
                         type=str,
                         help="kubeconfig file path for accessing the cluster "
                         "where the health deployment is.")
+    parser.add_argument("-t", "--runtime",
+                        default=7200,
+                        type=int,
+                        help="Run time in seconds")
     return parser.parse_args()
 
 
@@ -195,7 +199,8 @@ def main() -> None:
     pending_repairs: List[failure.Failure] = []
     chaos_mgr = ChaosManager(monitor_deployments, cli_args.monitor_deployment_cluster_config)
 
-    while True:
+    run_start = time.time()
+    while (time.time() - run_start) < cli_args.runtime:
         fail_instance: Optional[failure.Failure] = None
         try:
             fail_instance = chaos_mgr.get_failure(failure_types)
@@ -230,6 +235,9 @@ def main() -> None:
             # Wait until it's time for next failure, monitoring steady-state
             # periodically
             chaos_mgr.await_next_failure(cli_args.mttf, cli_args.check_interval)
+
+    logging.info("Chaos run completed.")
+
 
 if __name__ == '__main__':
     main()
