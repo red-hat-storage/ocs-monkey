@@ -24,10 +24,12 @@ chaos:
   cephclusterName: ocs-storagecluster-cephcluster
   mitigationTimeout: 900
   mttf: 150
+  runtime: 7200
 
 workload:
   accessmode: ReadWriteOnce
   namespace: ocs-monkey
+  runtime: 7200
   storageClass: ocs-storagecluster-ceph-rbd
 
 # StorageClass for the workload generator's logs (and must-gather)
