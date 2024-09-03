@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Load container artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4.1.7
         with:
           name: osio-container
           path: /tmp
